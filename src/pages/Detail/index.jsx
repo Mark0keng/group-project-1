@@ -14,13 +14,15 @@ import { useParams } from "react-router-dom";
 import classes from "./style.module.scss";
 import { Star } from "@mui/icons-material";
 import CardProduct from "../../components/Card";
-import axios from "axios";
+import Loading from "../../components/Loading";
+import Rating from "../../components/RatingCard";
 
 const Detail = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [recommend, setRecommend] = useState(null);
   const [alert, setAlert] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -37,7 +39,7 @@ const Detail = () => {
   const fetchData = async () => {
     const res = await callApi(`/products/${id}`, "GET");
     setData(res);
-    return res;
+    setIsLoading(false);
   };
 
   const fetchRecommend = async () => {
@@ -81,6 +83,7 @@ const Detail = () => {
 
   return (
     <>
+      {isLoading && <Loading />}
       <Navbar />
 
       {alert && <Alert severity="success">Item succesfully add to cart!</Alert>}
@@ -106,11 +109,8 @@ const Detail = () => {
                 </Typography>
                 <Grid container spacing={1}>
                   <Grid item>
-                    <Star color="warning" />
-                  </Grid>
-                  <Grid item>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      {data?.rating?.rate}
+                      <Rating rating={data?.rating?.rate} />
                     </Typography>
                   </Grid>
                 </Grid>

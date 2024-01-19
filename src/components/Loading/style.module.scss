@@ -1,0 +1,12 @@
+@import '../../styles/base.scss';
+
+.container {
+    margin: 0;
+    position: absolute;
+    z-index: auto;
+    background-color: #00000056;
+    @include directionToX;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}

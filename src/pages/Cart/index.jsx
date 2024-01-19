@@ -6,28 +6,41 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 import Navbar from '../../components/Navbar'
 
-import { callApiCarts } from '../../domain/api'
+import { callApi, callApiCarts } from '../../domain/api'
 
 import classes from './style.module.scss'
+import Loading from '../../components/Loading';
+import { Typography } from '@mui/material';
+import CardProduct from '../../components/Card';
 
 export default function Cart() {
 
     const [dataCart, setDataCart] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const [totalPrice, setTotalPrice] = useState(0)
+    const [data, setData] = useState(null);
+    const [recommend, setRecommend] = useState(null);
 
     const getDataCart = async () => {
         try {
             const response = await callApiCarts('/carts', 'GET')
-            // console.log(response)
             setDataCart(response)
+
+            let totPrice = 0
+            response?.forEach((data) => {
+                totPrice += data.price * data.qty
+            })
+            setTotalPrice(totPrice)
+
+            setIsLoading(false)
+
         } catch (error) {
-            console.log(error)
+
         }
     }
 
     const updateQty = async (params) => {
         try {
-            // console.log(parseInt(params.split(',')[0]))
             if (params.split(',')[2] === '-') {
                 if (parseInt(params.split(',')[1]) === 1) {
                     await callApiCarts(`/carts/${params.split(',')[0]}`, 'DELETE')
@@ -40,13 +53,12 @@ export default function Cart() {
 
             getDataCart()
         } catch (error) {
-            console.log(error)
+
         }
     }
 
     const deleteProduct = async (id) => {
         try {
-            // console.log(id)
             await callApiCarts(`/carts/${id}`, 'DELETE')
             getDataCart()
         } catch (error) {
@@ -54,13 +66,28 @@ export default function Cart() {
         }
     }
 
+    const fetchRecommend = async () => {
+        const res = await callApi(`/products`, "GET");
+
+        let arrRecommend = []
+        for (let i = 0; i < 5; i++) {
+            let rand = Math.floor(Math.random() * 20)
+            arrRecommend.push(res[rand])
+        }
+        setRecommend(arrRecommend);
+    };
+
+    useEffect(() => {
+        fetchRecommend();
+    }, [data]);
+
     useEffect(() => {
         getDataCart()
     }, [])
 
     return (
         <>
-            {isLoading && <CircularProgress />}
+            {isLoading && <Loading />}
             <Navbar />
             <div className={classes.container}>
                 <table className={classes.tableCart}>
@@ -94,13 +121,13 @@ export default function Cart() {
                                                         -
                                                     </button>
                                                     {data.qty}
-                                                    <button value={`${data.id},${data.qty},+`} onClick={(e) => console.log(e)}>
+                                                    <button value={`${data.id},${data.qty},+`} onClick={(e) => updateQty(e.target.value)}>
                                                         +
                                                     </button>
                                                 </div>
                                             </td>
                                             <td className={classes.subtotal}>
-                                                $ {(data.price * data.qty)}
+                                                $ {(data.price * data.qty).toLocaleString()}
                                             </td>
                                             <td className={classes.deleteButton}>
                                                 <button onClick={() => deleteProduct(data.id)}>
@@ -125,11 +152,32 @@ export default function Cart() {
                             Total
                         </h3>
                         <p>
-                            $16.00
+                            $ {totalPrice ? totalPrice.toLocaleString() : 0}
                         </p>
                     </div>
                 </div>
             </div >
+            <Typography sx={{ fontSize: 18, fontWeight: 700, padding: 5 }}>
+                Recommend Items
+            </Typography>
+            <div
+                style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", overflow: "auto", gap: 10, maxHeight: "max-content" }}
+            >
+                {recommend?.map((item, index) => {
+                    return (
+                        <CardProduct
+                            key={index}
+                            data={{
+                                id: item.id,
+                                name: item.title,
+                                price: item.price,
+                                img: item.image,
+                                rating: item.rating.rate,
+                            }}
+                        />
+                    );
+                })}
+            </div>
         </>
     )
 }
