@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Card,
   CardActions,
@@ -13,17 +14,19 @@ import { useParams } from "react-router-dom";
 import classes from "./style.module.scss";
 import { Star } from "@mui/icons-material";
 import CardProduct from "../../components/Card";
+import axios from "axios";
 
 const Detail = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [recommend, setRecommend] = useState(null);
+  const [alert, setAlert] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  useEffect(() => { 
+  useEffect(() => {
     fetchRecommend();
   }, [data]);
 
@@ -34,6 +37,7 @@ const Detail = () => {
   const fetchData = async () => {
     const res = await callApi(`/products/${id}`, "GET");
     setData(res);
+    return res;
   };
 
   const fetchRecommend = async () => {
@@ -48,18 +52,38 @@ const Detail = () => {
   };
 
   const addToCart = async () => {
-    await callApiCarts("/carts", "POST", {
-      id: data.id,
-      name: data.title,
-      price: data.price,
-      qty: 1,
-      image: data.image,
-    });
+    try {
+      const res = await callApiCarts(`/carts`, "GET");
+
+      res?.filter((item) => {
+        item.id === id;
+      });
+
+      if (res.length !== 0) {
+        await callApiCarts(`/carts/${id}`, "PATCH", {
+          qty: res[0].qty + 1,
+        });
+      } else {
+        await callApiCarts("/carts", "POST", {
+          id: data.id,
+          name: data.title,
+          price: data.price,
+          qty: 1,
+          image: data.image,
+        });
+      }
+
+      setAlert(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <>
       <Navbar />
+
+      {alert && <Alert severity="success">Item succesfully add to cart!</Alert>}
 
       <div style={{ padding: 50 }}>
         <Grid container spacing={2}>
