@@ -1,36 +1,30 @@
-import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
+import * as React from "react";
+import { useNavigate } from "react-router-dom";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { CardActionArea } from "@mui/material";
 
-import Rating from '../RatingCard';
+import Rating from "../RatingCard";
 
-import classes from './style.module.scss';
+import classes from "./style.module.scss";
 
-const CardProduct = ({data}) => {
-    const navigate = useNavigate();
+const CardProduct = ({ data }) => {
+  const navigate = useNavigate();
 
-    const {
-        id,
-        name,
-        price,
-        img,
-        rating
-      } = data;
+  const { id, name, price, img, rating } = data;
 
   return (
-    <Card sx={{ maxWidth: 300}} onClick={(() => navigate(`../product/${id}`))}>
+    <Card sx={{ maxWidth: 300 }} onClick={() => navigate(`../product/${id}`)}>
       <CardActionArea>
         <CardMedia
           component="img"
           height="150"
           width="50"
           image={img}
-          alt={name}  
-          sx={{ objectFit: 'contain' }}
+          alt={name}
+          sx={{ objectFit: "contain" }}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
@@ -45,7 +39,7 @@ const CardProduct = ({data}) => {
         </CardContent>
       </CardActionArea>
     </Card>
-  )
-}
+  );
+};
 
-export default CardProduct
+export default CardProduct;
