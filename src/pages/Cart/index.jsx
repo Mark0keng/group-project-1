@@ -6,16 +6,20 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 import Navbar from '../../components/Navbar'
 
-import { callApiCarts } from '../../domain/api'
+import { callApi, callApiCarts } from '../../domain/api'
 
 import classes from './style.module.scss'
 import Loading from '../../components/Loading';
+import { Typography } from '@mui/material';
+import CardProduct from '../../components/Card';
 
 export default function Cart() {
 
     const [dataCart, setDataCart] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [totalPrice, setTotalPrice] = useState(0)
+    const [data, setData] = useState(null);
+    const [recommend, setRecommend] = useState(null);
 
     const getDataCart = async () => {
         try {
@@ -61,6 +65,21 @@ export default function Cart() {
             console.log(error)
         }
     }
+
+    const fetchRecommend = async () => {
+        const res = await callApi(`/products`, "GET");
+
+        let arrRecommend = []
+        for (let i = 0; i < 5; i++) {
+            let rand = Math.floor(Math.random() * 20)
+            arrRecommend.push(res[rand])
+        }
+        setRecommend(arrRecommend);
+    };
+
+    useEffect(() => {
+        fetchRecommend();
+    }, [data]);
 
     useEffect(() => {
         getDataCart()
@@ -138,6 +157,27 @@ export default function Cart() {
                     </div>
                 </div>
             </div >
+            <Typography sx={{ fontSize: 18, fontWeight: 700, padding: 5 }}>
+                Recommend Items
+            </Typography>
+            <div
+                style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", overflow: "auto", gap: 10, maxHeight: "max-content" }}
+            >
+                {recommend?.map((item, index) => {
+                    return (
+                        <CardProduct
+                            key={index}
+                            data={{
+                                id: item.id,
+                                name: item.title,
+                                price: item.price,
+                                img: item.image,
+                                rating: item.rating.rate,
+                            }}
+                        />
+                    );
+                })}
+            </div>
         </>
     )
 }

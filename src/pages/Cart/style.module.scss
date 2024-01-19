@@ -1,6 +1,8 @@
 @import '../../styles/base.scss';
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 .container {
+    font-family: 'Roboto', sans-serif;
     @include directionToX;
 
     @include apply-at-lg-size {
@@ -90,6 +92,9 @@
 }
 
 .rightCard {
+    @include apply-at-lg-size{
+     width: 70%;   
+    }
     width: 30%;
 
     .rightCardContent {
