@@ -1,32 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
-import Card from '../../components/Card';
+import CardProduct from '../../components/Card';
+import TextField from '@mui/material/TextField';
+import { InputAdornment } from '@mui/material';
+import SearchIcon from "@mui/icons-material/Search";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 import classes from './style.module.scss';
 import { callApi } from '../../domain/api';
 
 const Home = () => {
-    const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [product, setProduct] = useState([]);
+    const [category, setCategory] = useState("");
 
     console.log(products)
 
     useEffect(() => {
         fetchDataProducts();
-    }, [])
+    }, [category])
 
     const fetchDataProducts = async () => {
         try {
-            const response = await callApi("/products", "GET");
+            let response = "";
+
+            if (category === "") {
+                response = await callApi("/products", 'GET');
+            } else {
+                response = await callApi(`/products/category/${category}`, 'GET');
+            } 
 
             const modifiedData = response?.map((item) => {
                 return {
                     id: item.id,
                     name: item.title,
                     price: item.price,
-                    desc: item.description,
-                    category: item.category,
                     img: item.image,
                     rating: item.rating.rate
                 }
@@ -38,20 +49,64 @@ const Home = () => {
         }
     }
 
-    return (
-        <>
-            <Navbar />
-            <div className={classes.container}>
-                {products.length > 0 ? (
+  return (
+    <>
+        <Navbar />
+        <div className={classes.container}>
+            <div className={classes.searchFilter}>
+                <TextField
+                    id="outlined-basic"
+                    label="Search for a products..."
+                    variant="outlined"
+                    InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                        <SearchIcon />
+                        </InputAdornment>
+                    ),
+                    }}
+                    value={product}
+                    onChange={(e) => {
+                    setProduct(e.target.value);
+                    }}
+                    sx={{ m: 1, width: "100%" }}
+                />
+                <FormControl sx={{ m: 1, width: "50%" }}>
+                    <InputLabel id="filter-category">Filter By Categories</InputLabel>
+                    <Select
+                    labelId="filter-category"
+                    id="filter-category"
+                    value={category}
+                    label="Filter By category"
+                    onChange={(e) => {
+                        setCategory(e.target.value);
+                    }}
+                    >
+                    <MenuItem value="">
+                        <em>All Categories</em>
+                    </MenuItem>
+                    <MenuItem value={"electronics"}>Electronics</MenuItem>
+                    <MenuItem value={"jewelery"}>Jewelery</MenuItem>
+                    <MenuItem value={"men's clothing"}>Mens clothing</MenuItem>
+                    <MenuItem value={"women's clothing"}>Womens clothing</MenuItem>
+                    </Select>
+                </FormControl>
+            </div>
+            <div className={classes.cardContainer}>
+                {products.length > 0  ? (
                     products.map((product, index) => (
-                        <Card key={index} data={product} />
+                        <CardProduct key={index} data={product} />
+
                     ))
                 ) : (
                     <div>Loading...</div>
                 )}
             </div>
-        </>
-    )
+
+        </div>
+    </>
+  )
+
 }
 
 export default Home
