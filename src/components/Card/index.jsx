@@ -15,8 +15,11 @@ const CardProduct = ({ data }) => {
 
   const { id, name, price, img, rating } = data;
 
+  console.log(fetch)
   return (
-    <Card sx={{ maxWidth: 300 }} onClick={() => navigate(`../product/${id}`)}>
+    <Card sx={{ maxWidth: 300, maxHeight: 400}} onClick={(() => {
+      navigate(`../product/${id}`)
+    })}>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -27,10 +30,10 @@ const CardProduct = ({ data }) => {
           sx={{ objectFit: "contain" }}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h5" component="div" sx={{ fontSize: '20px' }}>
             {name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" sx={{ fontSize: '20px', fontWeight: 'bolder' }}>
             ${price}
           </Typography>
           <Typography variant="body2" color="text.secondary">
