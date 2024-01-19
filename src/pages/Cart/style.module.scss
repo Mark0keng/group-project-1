@@ -2,8 +2,13 @@
 
 .container {
     @include directionToX;
+
+    @include apply-at-lg-size {
+        @include directionToY;
+        align-items: end;
+    }
+
     height: 100%;
-    // background-color: yellow;
     align-items: start;
     justify-content: space-evenly;
     gap: 30px;
@@ -21,8 +26,6 @@
     }
 
     tbody {
-        // background-color: #dedede;
-        // height: 100px;
 
         tr {
             .product {
@@ -87,12 +90,6 @@
 }
 
 .rightCard {
-    @include apply-at-lg-size {
-        display: none;
-    }
-
-    // background-color: blue;
-    // border: 2px solid black;
     width: 30%;
 
     .rightCardContent {

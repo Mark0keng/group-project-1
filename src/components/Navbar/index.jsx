@@ -7,11 +7,27 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { callApiCarts } from '../../domain/api';
 
 const Navbar = () => {
 
   const navigate = useNavigate()
   const location = useLocation()
+
+  const [cart, setCart] = useState([])
+
+  const getDataCart = async () => {
+    try {
+      const response = await callApiCarts('/carts', 'GET')
+      setCart(response)
+    } catch (error) {
+
+    }
+  }
+
+  useEffect(() => {
+    getDataCart()
+  }, [])
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -21,7 +37,7 @@ const Navbar = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { sm: 'block' }, ml: 5 }}
+            sx={{ display: { sm: 'block' }, ml: 5, cursor: 'pointer' }}
             onClick={() => navigate('/')}
           >
             TOKOKU
@@ -37,7 +53,7 @@ const Navbar = () => {
                   aria-label="show 17 new notifications"
                   color="inherit"
                 >
-                  <Badge badgeContent={17} color="error">
+                  <Badge badgeContent={cart.length === 0 ? 0 : cart.length} color="error">
                     <ShoppingCartIcon onClick={() => navigate('/cart')} />
                   </Badge>
                 </IconButton>
