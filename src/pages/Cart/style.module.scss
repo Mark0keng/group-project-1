@@ -1,0 +1,103 @@
+@import '../../styles/base.scss';
+
+.container {
+    @include directionToX;
+    height: 100%;
+    // background-color: yellow;
+    align-items: start;
+    justify-content: space-evenly;
+    gap: 30px;
+
+}
+
+.tableCart {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead {
+        background-color: #1976D2;
+        height: 50px;
+        color: white;
+    }
+
+    tbody {
+        // background-color: #dedede;
+        // height: 100px;
+
+        tr {
+            .product {
+                padding: 10px;
+
+                .name {
+                    @include directionToX;
+                    align-items: center;
+                    gap: 20px;
+
+                    img {
+                        width: 100px;
+                        height: auto;
+                        object-fit: cover;
+                    }
+                }
+            }
+
+            .price {
+                text-align: center;
+                padding: 10px;
+                width: min-content;
+            }
+
+            .qty {
+                width: min-content;
+
+                .btnQty {
+                    @include directionToX;
+                    justify-content: space-evenly;
+                    align-items: center;
+                }
+
+                text-align: center;
+                padding: 10px;
+
+                button {
+                    border: 0;
+                    background-color: transparent;
+                    width: 30px;
+                    height: 30px;
+                    cursor: pointer;
+                }
+            }
+
+            .subtotal {
+                text-align: right;
+                padding: 10px;
+            }
+
+            .deleteButton {
+                button {
+                    text-align: center;
+                    border: 0;
+                    background-color: transparent;
+                    color: #aeaeae;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.rightCard {
+    @include apply-at-lg-size {
+        display: none;
+    }
+
+    // background-color: blue;
+    // border: 2px solid black;
+    width: 30%;
+
+    .rightCardContent {
+        @include directionToX;
+        justify-content: space-between;
+        padding: 5px 10px;
+    }
+}

@@ -23,7 +23,7 @@ const Detail = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { 
     fetchRecommend();
   }, [data]);
 
@@ -48,7 +48,7 @@ const Detail = () => {
   };
 
   const addToCart = async () => {
-    await callApiCarts("/cart", "POST", {
+    await callApiCarts("/carts", "POST", {
       id: data.id,
       name: data.title,
       price: data.price,

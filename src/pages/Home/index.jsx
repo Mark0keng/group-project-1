@@ -25,9 +25,10 @@ const Home = () => {
     search();
   }, [product]);
 
+
   const search = async () => {
     const res = await fetchDataProducts();
-
+    
     const finalRes = res?.reduce((result, item) => {
       if (item?.name?.toLowerCase().includes(product.toLowerCase())) {
         result.push(item);
@@ -122,5 +123,6 @@ const Home = () => {
     </>
   );
 };
+
 
 export default Home;

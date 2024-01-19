@@ -1,0 +1,14 @@
+@mixin directionToX {
+    display: flex;
+    flex-direction: row;
+}
+
+@mixin directionToY {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin directionToYReverse {
+    display: flex;
+    flex-direction: column-reverse;
+}
