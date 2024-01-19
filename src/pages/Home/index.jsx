@@ -23,7 +23,7 @@ const Home = () => {
         fetchDataProducts();
     }, [category])
 
-    const fetchDataProducts = async() => {
+    const fetchDataProducts = async () => {
         try {
             let response = "";
 
@@ -44,7 +44,7 @@ const Home = () => {
             })
 
             setProducts(modifiedData);
-        } catch(error) {
+        } catch (error) {
             console.log(error)
         }
     }
@@ -97,14 +97,17 @@ const Home = () => {
                 {products.length > 0  ? (
                     products.map((product, index) => (
                         <CardProduct key={index} data={product} />
+
                     ))
                 ) : (
                     <div>Loading...</div>
                 )}
             </div>
+
         </div>
     </>
   )
+
 }
 
 export default Home
