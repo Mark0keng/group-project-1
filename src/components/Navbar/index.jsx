@@ -20,7 +20,7 @@ const Navbar = () => {
               variant="h6"
               noWrap
               component="div"
-              sx={{ display: { sm: 'block' }, ml: 5 }}
+              sx={{ display: { sm: 'block' }, ml: 5, cursor: "pointer" }}
               onClick={() => navigate('/')}
             >
               TOKOKU
