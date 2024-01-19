@@ -27,6 +27,10 @@ const Detail = () => {
     fetchRecommend();
   }, [data]);
 
+  useEffect(() => {
+    fetchData();
+  }, [id]);
+
   const fetchData = async () => {
     const res = await callApi(`/products/${id}`, "GET");
     setData(res);
