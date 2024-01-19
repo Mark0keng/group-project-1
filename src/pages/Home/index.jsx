@@ -63,13 +63,13 @@ const Home = () => {
                         <InputAdornment position="start">
                         <SearchIcon />
                         </InputAdornment>
-                    ),
+                    ),  
                     }}
                     value={product}
                     onChange={(e) => {
                     setProduct(e.target.value);
                     }}
-                    sx={{ m: 1, width: "100%" }}
+                    sx={{ m: 1, width: "100%", maxWidth: '400px' }}
                 />
                 <FormControl sx={{ m: 1, width: "50%" }}>
                     <InputLabel id="filter-category">Filter By Categories</InputLabel>
@@ -77,18 +77,19 @@ const Home = () => {
                     labelId="filter-category"
                     id="filter-category"
                     value={category}
+                    sx={{ width: "100%", maxWidth: '400px' }}
                     label="Filter By category"
                     onChange={(e) => {
                         setCategory(e.target.value);
                     }}
                     >
-                    <MenuItem value="">
-                        <em>All Categories</em>
-                    </MenuItem>
-                    <MenuItem value={"electronics"}>Electronics</MenuItem>
-                    <MenuItem value={"jewelery"}>Jewelery</MenuItem>
-                    <MenuItem value={"men's clothing"}>Mens clothing</MenuItem>
-                    <MenuItem value={"women's clothing"}>Womens clothing</MenuItem>
+                        <MenuItem value="">
+                            <em>All Categories</em>
+                        </MenuItem>
+                        <MenuItem value={"electronics"}>Electronics</MenuItem>
+                        <MenuItem value={"jewelery"}>Jewelery</MenuItem>
+                        <MenuItem value={"men's clothing"}>Mens clothing</MenuItem>
+                        <MenuItem value={"women's clothing"}>Womens clothing</MenuItem>
                     </Select>
                 </FormControl>
             </div>
