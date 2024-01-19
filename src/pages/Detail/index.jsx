@@ -14,6 +14,7 @@ import classes from "./style.module.scss";
 import { Star } from "@mui/icons-material";
 import CardProduct from "../../components/Card";
 import Loading from "../../components/Loading";
+import Rating from "../../components/RatingCard";
 
 const Detail = () => {
   const { id } = useParams();
@@ -85,11 +86,8 @@ const Detail = () => {
                 </Typography>
                 <Grid container spacing={1}>
                   <Grid item>
-                    <Star color="warning" />
-                  </Grid>
-                  <Grid item>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      {data?.rating?.rate}
+                      <Rating rating={data?.rating?.rate} /> 
                     </Typography>
                   </Grid>
                 </Grid>
