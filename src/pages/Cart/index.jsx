@@ -9,25 +9,34 @@ import Navbar from '../../components/Navbar'
 import { callApiCarts } from '../../domain/api'
 
 import classes from './style.module.scss'
+import Loading from '../../components/Loading';
 
 export default function Cart() {
 
     const [dataCart, setDataCart] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const [totalPrice, setTotalPrice] = useState(0)
 
     const getDataCart = async () => {
         try {
             const response = await callApiCarts('/carts', 'GET')
-            // console.log(response)
             setDataCart(response)
+
+            let totPrice = 0
+            response?.forEach((data) => {
+                totPrice += data.price * data.qty
+            })
+            setTotalPrice(totPrice)
+
+            setIsLoading(false)
+
         } catch (error) {
-            console.log(error)
+
         }
     }
 
     const updateQty = async (params) => {
         try {
-            // console.log(parseInt(params.split(',')[0]))
             if (params.split(',')[2] === '-') {
                 if (parseInt(params.split(',')[1]) === 1) {
                     await callApiCarts(`/carts/${params.split(',')[0]}`, 'DELETE')
@@ -40,13 +49,12 @@ export default function Cart() {
 
             getDataCart()
         } catch (error) {
-            console.log(error)
+
         }
     }
 
     const deleteProduct = async (id) => {
         try {
-            // console.log(id)
             await callApiCarts(`/carts/${id}`, 'DELETE')
             getDataCart()
         } catch (error) {
@@ -60,7 +68,7 @@ export default function Cart() {
 
     return (
         <>
-            {isLoading && <CircularProgress />}
+            {isLoading && <Loading />}
             <Navbar />
             <div className={classes.container}>
                 <table className={classes.tableCart}>
@@ -94,13 +102,13 @@ export default function Cart() {
                                                         -
                                                     </button>
                                                     {data.qty}
-                                                    <button value={`${data.id},${data.qty},+`} onClick={(e) => console.log(e)}>
+                                                    <button value={`${data.id},${data.qty},+`} onClick={(e) => updateQty(e.target.value)}>
                                                         +
                                                     </button>
                                                 </div>
                                             </td>
                                             <td className={classes.subtotal}>
-                                                $ {(data.price * data.qty)}
+                                                $ {(data.price * data.qty).toLocaleString()}
                                             </td>
                                             <td className={classes.deleteButton}>
                                                 <button onClick={() => deleteProduct(data.id)}>
@@ -125,7 +133,7 @@ export default function Cart() {
                             Total
                         </h3>
                         <p>
-                            $16.00
+                            $ {totalPrice ? totalPrice.toLocaleString() : 0}
                         </p>
                     </div>
                 </div>
