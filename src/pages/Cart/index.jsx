@@ -58,7 +58,7 @@ export default function Cart() {
             await callApiCarts(`/carts/${id}`, 'DELETE')
             getDataCart()
         } catch (error) {
-
+            console.log(error)
         }
     }
 
