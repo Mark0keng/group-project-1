@@ -14,9 +14,9 @@ const Home = () => {
 
     useEffect(() => {
         fetchDataProducts();
-    })
+    }, [])
 
-    const fetchDataProducts = async() => {
+    const fetchDataProducts = async () => {
         try {
             const response = await callApi("/products", "GET");
 
@@ -33,25 +33,25 @@ const Home = () => {
             })
 
             setProducts(modifiedData);
-        } catch(error) {
+        } catch (error) {
             console.log(error)
         }
     }
 
-  return (
-    <>
-        <Navbar />
-        <div className={classes.container}>
-            {products.length > 0 ? (
-                products.map((product, index) => (
-                    <Card key={index} data={product} />
-                ))
-            ) : (
-                <div>Loading...</div>
-            )}
-        </div>
-    </>
-  )
+    return (
+        <>
+            <Navbar />
+            <div className={classes.container}>
+                {products.length > 0 ? (
+                    products.map((product, index) => (
+                        <Card key={index} data={product} />
+                    ))
+                ) : (
+                    <div>Loading...</div>
+                )}
+            </div>
+        </>
+    )
 }
 
 export default Home
