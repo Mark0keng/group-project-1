@@ -29,7 +29,7 @@ const Detail = () => {
 
   useEffect(() => {
     fetchData();
-  }, [id])
+  }, [id]);
 
   const fetchData = async () => {
     const res = await callApi(`/products/${id}`, "GET");
