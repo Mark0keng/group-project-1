@@ -57,17 +57,17 @@ const Detail = () => {
     try {
       const res = await callApiCarts(`/carts`, "GET");
 
-      res?.filter((item) => {
-        item.id === id;
+      const filterRes = res?.filter((item) => {
+        return String(item.id) === id;
       });
 
-      if (res.length !== 0) {
+      if (filterRes.length !== 0) {
         await callApiCarts(`/carts/${id}`, "PATCH", {
-          qty: res[0].qty + 1,
+          qty: filterRes[0].qty + 1,
         });
       } else {
         await callApiCarts("/carts", "POST", {
-          id: data.id,
+          id: String(data.id),
           name: data.title,
           price: data.price,
           qty: 1,
