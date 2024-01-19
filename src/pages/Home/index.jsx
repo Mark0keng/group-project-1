@@ -115,13 +115,11 @@ const Home = () => {
           </FormControl>
         </div>
         <div className={classes.cardContainer}>
-          {products.length > 0 ? (
+          {
             products.map((product, index) => (
               <CardProduct key={index} data={product} />
             ))
-          ) : (
-            <div>Loading...</div>
-          )}
+          }
         </div>
       </div>
     </>
