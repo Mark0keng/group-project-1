@@ -8,6 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Loading from "../../components/Loading";
 
 import classes from "./style.module.scss";
 import { callApi } from "../../domain/api";
@@ -16,6 +17,7 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState([]);
   const [category, setCategory] = useState("");
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     fetchDataProducts();
@@ -60,7 +62,8 @@ const Home = () => {
       });
 
       setProducts(modifiedData);
-
+      setIsLoading(false);
+      
       return modifiedData;
     } catch (error) {
       console.log(error);
@@ -69,6 +72,7 @@ const Home = () => {
 
   return (
     <>
+      {isLoading && <Loading />}
       <Navbar />
       <div className={classes.container}>
         <div className={classes.searchFilter}>

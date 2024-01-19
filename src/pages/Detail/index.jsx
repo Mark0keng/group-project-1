@@ -13,11 +13,13 @@ import { useParams } from "react-router-dom";
 import classes from "./style.module.scss";
 import { Star } from "@mui/icons-material";
 import CardProduct from "../../components/Card";
+import Loading from "../../components/Loading";
 
 const Detail = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [recommend, setRecommend] = useState(null);
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     fetchData();
@@ -34,6 +36,7 @@ const Detail = () => {
   const fetchData = async () => {
     const res = await callApi(`/products/${id}`, "GET");
     setData(res);
+    setIsLoading(false);
   };
 
   const fetchRecommend = async () => {
@@ -59,8 +62,8 @@ const Detail = () => {
 
   return (
     <>
+      {isLoading && <Loading />}
       <Navbar />
-
       <div style={{ padding: 50 }}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
